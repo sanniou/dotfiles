@@ -1,0 +1,57 @@
+# Enable Powerlevel10k instant prompt. Should stay close to the top of ~/.zshrc.
+# Initialization code that may require console input (password prompts, [y/n]
+# confirmations, etc.) must go above this block; everything else may go below.
+if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]; then
+  source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
+fi
+
+[[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
+
+autoload -Uz compinit
+typeset -i updated_at=$(date +'%j' -r ~/.zcompdump 2>/dev/null || stat -f '%Sm' -t '%j' ~/.zcompdump 2>/dev/null)
+if [ $(date +'%j') != $updated_at ]; then
+    compinit -i
+else
+    compinit -C -i
+fi
+zmodload -i zsh/complist
+
+# Aliases
+alias ..='cd ..'
+alias ...='cd ../..'
+alias ....='cd ../../..'
+alias grep='grep --color=auto'
+alias less='less -R'
+alias docker='sudo docker'
+
+OS="$(uname)"
+if [[ "$OS" == "Linux" ]]; then
+    alias bat='batcat --theme base16 -p'
+    alias ls='ls -h --color=auto'
+    alias la='ls -lah --color=auto'
+fi
+
+# Exports
+export PATH=$PATH:~/.local/bin
+export http_proxy="http://127.0.0.1:7890"
+export https_proxy="http://127.0.0.1:7890"
+export TERM="xterm-256color"
+export DOCKER_HOST=unix://$XDG_RUNTIME_DIR/docker.sock
+# export LANGUAGE="C.UTF-8"
+# export LANG="C.UTF-8"
+# export LC_ALL="C.UTF-8"
+# export LC_CTYPE="C.UTF-8"
+# export LC_MESSAGES="C.UTF-8"
+# sources
+
+HOMEZSH_FOLDER="/usr/share"
+source "$HOMEZSH_FOLDER/zsh-theme-powerlevel10k/powerlevel10k.zsh-theme"
+source "$HOMEZSH_FOLDER/zsh/plugins/zsh-autosuggestions/zsh-autosuggestions.zsh"
+source "$HOMEZSH_FOLDER/zsh/plugins/fast-syntax-highlighting/fast-syntax-highlighting.plugin.zsh"
+# source /home/jichang/.zsh/completion.zsh
+source /home/jichang/.zsh/history.zsh
+source /home/jichang/.zsh/key-bindings.zsh
+source /usr/share/fzf/key-bindings.zsh
+source /usr/share/fzf/completion.zsh 
+
+___MY_VMOPTIONS_SHELL_FILE="${HOME}/.jetbrains.vmoptions.sh"; if [ -f "${___MY_VMOPTIONS_SHELL_FILE}" ]; then . "${___MY_VMOPTIONS_SHELL_FILE}"; fi

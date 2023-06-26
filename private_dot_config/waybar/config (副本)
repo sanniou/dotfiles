@@ -1,0 +1,160 @@
+{
+  "layer": "top",
+  "position": "top",
+  "height": 35,
+  "spacing": 2,
+  "margin-top": 5,
+  "margin-bottom":10,
+
+  // Choose the order of the modules
+
+  "modules-left":[  "custom/launcher", "wlr/taskbar"],
+  "modules-right":["custom/media",  "idle_inhibitor","pulseaudio", "cpu", "memory", "temperature", "backlight", "battery","network", "tray", "clock", "custom/power"],
+  // Modules configuration
+
+  "wlr/taskbar": {
+      "format": "{icon}",
+      "icon-size": 20,
+      "icon-theme": "Colloid",
+      "tooltip-format": "{title}|{app_id}",
+      "ignore-list": [
+        "Wine System Tray"
+      ], 
+      "on-click": "activate",
+      "on-click-middle": "close",
+      "on-click-right": "minimize"
+  },
+  "idle_inhibitor": {
+      "format": "{icon}",
+      "format-icons": {
+          "activated": "",
+          "deactivated": ""
+      }
+  },
+  "tray": {
+      "icon-size": 20,
+      "spacing": 10
+  },
+  "clock": {
+      "tooltip-format": "<big>{:%Y %B}</big>\n<tt><small>{calendar}</small></tt>",
+      "format-alt": "{:%Y-%m-%d %w}"
+  },
+  "cpu": {
+      "format": "{usage}% ",
+      "states": {
+        "medium": 50,
+        "high": 90
+      },
+      "tooltip": false
+  },
+  "memory": {
+      "format": "{}% "
+  },
+
+  "temperature": {
+      // dir="$(dirname $(grep -l coretemp /sys/class/hwmon/hwmon*/name))"
+      // ln -sf $dir/temp1_input /tmp/temperature
+      // "hwmon-path": "/tmp/temperature"
+      // "thermal-zone": 2,
+      "hwmon-path": "/sys/class/hwmon/hwmon5/temp1_input",
+      "critical-threshold": 80,
+      // "format-critical": "{temperatureC}°C {icon}",
+      "format": "{temperatureC}°C {icon}",
+      "format-icons": ["", "", ""]
+  },
+  "backlight": {
+      // "device": "acpi_video1",
+      "format": "{percent}% {icon}",
+      "on-scroll-up": "light -A 5",
+      "on-scroll-down": "light -U 5",
+      "format-icons": ["", ""]
+  },
+  "battery": {
+      "states": {
+          "good": 95,
+          "warning": 30,
+          "critical": 15
+      },
+      "format": "{capacity}% {icon}",
+      "format-charging": "{capacity}% ",
+      "format-plugged": "{capacity}% ",
+      "format-alt": "{time} {icon}",
+      // "format-good": "", // An empty format will hide the module
+      // "format-full": "",
+      "format-icons": ["", "", "", "", ""]
+  },
+  "network": {
+      // "interface": "wlp2*", // (Optional) To force the use of this interface
+      "format-wifi": "{essid} ({signalStrength}%) {bandwidthDownBytes} ",
+      
+      "format-ethernet": "Connected  ",
+      "tooltip-format": "{ifname} via {gwaddr} ",
+      "format-linked": "{ifname} (No IP) ",
+      "format-disconnected": "Disconnected ⚠",
+      "format-alt": "{ifname}: {ipaddr}/{cidr}",
+      "on-click-right": "rofi -combi-modi window,drun -show combi -modi combi"
+  },
+  "pulseaudio": {
+      "scroll-step": 5, // %, can be a float
+      "format": "{volume}% {icon}",
+      "format-bluetooth": "{volume}% {icon}",
+      "format-bluetooth-muted": " {icon} {format_source}",
+      "format-muted": " {format_source}",
+      "format-source": "",
+      "format-source-muted": "",
+      "format-icons": {
+          "headphone": "",
+          "hands-free": "",
+          "headset": "",
+          "phone": "",
+          "portable": "",
+          "car": "",
+          "hdmi": "",
+          "default": ["", "", ""]
+      },
+      "on-click": "amixer set Master toggle",
+      "on-click-right": "pavucontrol"
+  },
+  "custom/media": {
+      //"format": "{icon} {}",
+      //"return-type": "json",
+      "max-length": 500,
+      "tooltip": false,
+      "format-icons": {
+          "spotify": " ",
+          "default": " "
+      },
+      "escape": true,
+      "exec": "playerctl metadata -f '{{playerName}} {{lc(status)}} «{{title}} - {{artist}}»' -F",
+      "on-click": "playerctl play-pause",
+      "on-click-middle": "playerctl stop",
+      "on-scroll-up": "playerctl previous",
+      "on-scroll-down": "playerctl next"
+  },
+  "custom/launcher":{
+      "format": "",
+      "tooltip": false,
+      "on-click": "wofi -Sdrun --allow-images --allow-markup -W 680 -H 560",
+      "on-click-right": "killall wofi"
+  },
+  "custom/power":{
+      "format": "",
+      "on-click": "wlogout",
+      "on-click-right": "killall wlogout"
+  },
+  "custom/layout":{
+      "format": " ",
+      "on-click": "bash ~/.config/system_scripts/layout.sh"
+  },
+  "custom/updater":{
+      "format": "  {} Updates",
+      "exec": "checkupdates | wc -l",
+      "exec-if": "[[ $(checkupdates | wc -l) != 0 ]]",
+      "interval": 15,
+      "on-click": "alacritty -e yay -Syu"
+  },
+  "custom/snip":{
+      "format": " ",
+      "on-click": "env XDG_CURRENT_DESKTOP='sway' flameshot gui"
+  }
+}

@@ -1,0 +1,361 @@
+// vim: se ft=javascript:
+[{
+  "height": 20,
+  "modules-left": ["custom/aqi", "custom/media"],
+  // "modules-center": ["custom/taskmaid"],
+  "modules-center": ["wlr/taskbar"],
+  "modules-right": ["idle_inhibitor","network", "cpu", "temperature", "memory", "battery", "pulseaudio", "tray", "clock"],
+  "idle_inhibitor": {
+    "format": "{icon}",
+    "format-icons": {
+      "activated": "",
+      "deactivated": ""
+    }
+  },
+  "wlr/taskbar": {
+    "format": "{icon}",
+    "icon-size": 24,
+    "icon-theme": "Tela",
+    "tooltip-format": "{title}|{app_id}",
+    "on-click": "minimize-raise",
+    "on-click-middle": "close",
+    "on-click-right": "minimize",
+    /* "ignore-list": [ */
+    /* "Alacritty" */
+    /* ], */
+    "app_ids-mapping": {
+      "jetbrains-idea-ce": "idea",
+      "nil": "Microsoft-edge",
+      "jetbrains-pycharm-ce": "pycharm",
+      "lutris": "net.winegame.client",
+      "explorer.exe": "wine"
+    }
+  },
+  "tray": {
+    "icon-size": 20,
+    "spacing": 10
+  },
+  "clock": {
+    "format": "{:%Y-%m-%d %H:%M:%S %A}",
+    "tooltip-format": "<span font=\"文泉驿等宽正黑 11\">      {:%Y %B}\n\n{calendar}</span>",
+    "interval": 1,
+  },
+  // "clock": {
+  //   "format": " {:%I:%M %p}",
+  //   "format-alt": " {:%G %b %d %A}",
+  //   "tooltip-format": "<big>{:%Y %B}</big>\n<tt><big>{calendar}</big></tt>",
+  //   // "tooltip-format": "{:%Y-%m-%d %A %H:%M}",
+  //   "today-format": "<span color='#ff928f'><b><u>{}</u></b></span>",
+  //   "format-calendar": "<span color='#a7d479'><b>{}</b></span>",
+  //   "format-calendar-weekdays": "<span color='#a2e0df'><b>{}</b></span>"
+  // },
+  "cpu": {
+    "format": " {usage:2d}<span color='gray'>%</span> {load:5.2f}",
+    "states": {
+      "medium": 50,
+      "high": 90,
+    }
+  },
+  "memory": {
+    "format": "  {}<span color='gray'>%</span>"
+    // format": " {used:.1f}G"
+  },
+  "temperature": {
+    // "thermal-zone": 2,
+    // "hwmon-path": "/sys/class/hwmon/hwmon2/temp1_input",
+    "critical-threshold": 90,
+    // "format-critical": " {temperatureC}°C",
+    // "format": " {temperatureC}°C"
+    // "format-critical": "{temperatureC}°C {icon}",
+    "format": "{temperatureC}°C {icon}",
+    "format-icons": ["", "", ""]
+  },
+  "backlight": {
+    "device": "amdgpu_bl0",
+    "format": "{icon} {percent}%",
+    "on-scroll-up": "light -A 5",
+    "on-scroll-down": "light -U 5",
+    "states": [
+      0,
+      50
+    ],
+    "format-icons": [
+      "",
+      ""
+    ]
+  },
+  "network": {
+    // "interface": "wlp2s0", // (Optional) To force the use of this interface
+    "format-wifi": " {essid} {bandwidthDownBytes}",
+    "format-ethernet": " {ifname}: {ipaddr}/{cidr}",
+    "format-disconnected": " Disconnected",
+    "tooltip-format": " {ipaddr}",
+    "interval": 5,
+    "on-click": "rofi -combi-modi window,drun -show combi -modi combi",
+    "on-click-right": "wlogout"
+  },
+
+  "battery": {
+    "states": {
+      "good": 95,
+      "warning": 30,
+      "critical": 15
+    },
+    "format": "{icon} {capacity}<span color='gray'>%</span>",
+    "format-charging": " {capacity}<span color='gray'>%</span>",
+    "format-plugged": "",
+    "format-full": "",
+    "format-not-charging": "",
+    "format-alt": "{icon} {time}",
+    "format-time": "{H}:{M:02d}",
+    "format-icons": ["", "", "", "", ""]
+  },
+  "pulseaudio": {
+    "scroll-step": 5, // %, can be a float
+    "format": "{volume}% {icon} {format_source}",
+    "format-bluetooth": "{volume}% {icon} {format_source}",
+    "format-bluetooth-muted": " {icon} {format_source}",
+    "format-muted": " {format_source}",
+    "format-source": "",
+    "format-source-muted": "",
+    "format-icons": {
+      "headphone": "",
+      "hands-free": "",
+      "headset": "",
+      "phone": "",
+      "portable": "",
+      "car": "",
+      "hdmi": "",
+      "default": ["", "", ""]
+    },
+    "on-click": "amixer set Master toggle",
+    "on-click-right": "pavucontrol"
+  },
+  "custom/media": {
+    "exec": "playerctl metadata -f '{{playerName}} {{lc(status)}} «{{title}} - {{artist}}»' -F",
+    "on-click": "playerctl play-pause",
+    "on-click-middle": "playerctl stop",
+    "on-scroll-up": "playerctl previous",
+    "on-scroll-down": "playerctl next",
+    // indicate this can be truncated
+    "max-length": 500,
+    "escape": true,
+    "tooltip": false,
+  },
+  "custom/aqi": {
+    "exec": "~/.config/waybar/scripts/aqi",
+    "on-click": "~/.config/waybar/scripts/aqi open-url",
+    "return-type": "json",
+    "escape": true,
+  },
+  "custom/taskmaid": {
+    "exec": "~/.config/waybar/scripts/taskmaid eDP-1",
+    "on-click-middle": "~/.config/waybar/scripts/taskmaid close",
+    "return-type": "json",
+    "max-length": 1500,
+    "escape": true,
+  },
+  "custom/netspeed": {
+    "exec": "~/.config/waybar/scripts/netspeed",
+    "return-type": "json",
+    "escape": false,
+    "min-length": 12,
+  },
+}, {
+  "height": 20,
+  "output": "DP-2",
+  "modules-left": ["custom/aqi", "custom/media"],
+  "modules-center": ["custom/taskmaid"],
+  "modules-right": ["idle_inhibitor", "custom/netspeed", "cpu", "temperature", "memory", "battery", "pulseaudio", "tray", "clock"],
+  "idle_inhibitor": {
+    "format": "{icon}",
+    "format-icons": {
+      "activated": "",
+      "deactivated": ""
+    }
+  },
+  "clock": {
+    "format": "{:%Y-%m-%d %H:%M:%S %A}",
+    "tooltip-format": "<span font=\"文泉驿等宽正黑 11\">      {:%Y %B}\n\n{calendar}</span>",
+    "interval": 1,
+  },
+  "cpu": {
+    "format": "CPU {usage:2d}<span color='gray'>%</span> {load:5.2f}",
+    "states": {
+      "medium": 50,
+      "high": 90,
+    }
+  },
+  "memory": {
+    "format": "MEM {}<span color='gray'>%</span>"
+  },
+  "temperature": {
+    // "thermal-zone": 2,
+    // "hwmon-path": "/sys/class/hwmon/hwmon2/temp1_input",
+    "critical-threshold": 90,
+    // "format-critical": "{temperatureC}°C {icon}",
+    "format": "{temperatureC}°C {icon}",
+    "format-icons": ["", "", ""]
+  },
+  "battery": {
+    "states": {
+      "good": 95,
+      "warning": 30,
+      "critical": 15
+    },
+    "format": "{icon} {capacity}<span color='gray'>%</span>",
+    "format-charging": " {capacity}<span color='gray'>%</span>",
+    "format-plugged": "",
+    "format-not-charging": "",
+    "format-full": "",
+    "format-alt": "{icon} {time}",
+    "format-time": "{H}:{M:02d}",
+    "format-icons": ["", "", "", "", ""]
+  },
+  "pulseaudio": {
+    "scroll-step": 5, // %, can be a float
+    "format": "{volume}% {icon} {format_source}",
+    "format-bluetooth": "{volume}% {icon} {format_source}",
+    "format-bluetooth-muted": " {icon} {format_source}",
+    "format-muted": " {format_source}",
+    "format-source": "",
+    "format-source-muted": "",
+    "format-icons": {
+      "headphone": "",
+      "hands-free": "",
+      "headset": "",
+      "phone": "",
+      "portable": "",
+      "car": "",
+      "hdmi": "",
+      "default": ["", "", ""]
+    },
+    "on-click": "pamixer --toggle-mute",
+    "on-click-right": "pavucontrol"
+  },
+  "custom/media": {
+    "exec": "playerctl metadata -f '{{playerName}} {{lc(status)}} «{{title}} - {{artist}}»' -F",
+    "on-click": "playerctl play-pause",
+    "on-click-middle": "playerctl stop",
+    "on-scroll-up": "playerctl previous",
+    "on-scroll-down": "playerctl next",
+    "max-length": 500,
+    "escape": true,
+    "tooltip": false,
+  },
+  "custom/aqi": {
+    "exec": "~/.config/waybar/scripts/aqi",
+    "on-click": "~/.config/waybar/scripts/aqi open-url",
+    "return-type": "json",
+    "escape": true,
+  },
+  "custom/taskmaid": {
+    "exec": "~/.config/waybar/scripts/taskmaid DP-2",
+    "on-click-middle": "~/.config/waybar/scripts/taskmaid close",
+    "on-click-middle": "~/.config/waybar/scripts/taskmaid list",
+    "return-type": "json",
+    "max-length": 1500,
+    "escape": true,
+  },
+  "custom/netspeed": {
+    "exec": "~/.config/waybar/scripts/netspeed",
+    "return-type": "json",
+    "escape": false,
+    "min-length": 12,
+  },
+}, {
+  "height": 20,
+  "output": "HDMI-A-1",
+  "modules-left": ["custom/aqi", "custom/media"],
+  "modules-center": ["custom/taskmaid"],
+  "modules-right": ["idle_inhibitor", "cpu", "temperature", "memory", "battery", "pulseaudio", "tray", "clock"],
+  "idle_inhibitor": {
+    "format": "{icon}",
+    "format-icons": {
+      "activated": "",
+      "deactivated": ""
+    }
+  },
+  "clock": {
+    "format": "{:%Y-%m-%d %H:%M %A}",
+    "tooltip-format": "<span font=\"文泉驿等宽正黑 11\">      {:%Y %B}\n\n{calendar}</span>",
+    "interval": 1,
+  },
+  "cpu": {
+    "format": "CPU {usage:2d}<span color='gray'>%</span> {load:5.2f}",
+    "states": {
+      "medium": 50,
+      "high": 90,
+    }
+  },
+  "memory": {
+    "format": "MEM {}<span color='gray'>%</span>"
+  },
+  "temperature": {
+    // "thermal-zone": 2,
+    // "hwmon-path": "/sys/class/hwmon/hwmon2/temp1_input",
+    "critical-threshold": 90,
+    // "format-critical": "{temperatureC}°C {icon}",
+    "format": "{temperatureC}°C {icon}",
+    "format-icons": ["", "", ""]
+  },
+  "battery": {
+    "states": {
+      "good": 95,
+      "warning": 30,
+      "critical": 15
+    },
+    "format": "{icon} {capacity}<span color='gray'>%</span>",
+    "format-charging": " {capacity}<span color='gray'>%</span>",
+    "format-plugged": "",
+    "format-not-charging": "",
+    "format-full": "",
+    "format-alt": "{icon} {time}",
+    "format-time": "{H}:{M:02d}",
+    "format-icons": ["", "", "", "", ""]
+  },
+  "pulseaudio": {
+    "scroll-step": 5, // %, can be a float
+    "format": "{volume}% {icon} {format_source}",
+    "format-bluetooth": "{volume}% {icon} {format_source}",
+    "format-bluetooth-muted": " {icon} {format_source}",
+    "format-muted": " {format_source}",
+    "format-source": "",
+    "format-source-muted": "",
+    "format-icons": {
+      "headphone": "",
+      "hands-free": "",
+      "headset": "",
+      "phone": "",
+      "portable": "",
+      "car": "",
+      "hdmi": "",
+      "default": ["", "", ""]
+    },
+    "on-click": "pamixer --toggle-mute",
+    "on-click-right": "pavucontrol"
+  },
+  "custom/media": {
+    "exec": "playerctl metadata -f '{{playerName}} {{lc(status)}} «{{title}} - {{artist}}»' -F",
+    "on-click": "playerctl play-pause",
+    "on-click-middle": "playerctl stop",
+    "on-scroll-up": "playerctl previous",
+    "on-scroll-down": "playerctl next",
+    "max-length": 500,
+    "escape": true,
+    "tooltip": false,
+  },
+  "custom/aqi": {
+    "exec": "~/.config/waybar/scripts/aqi",
+    "on-click": "~/.config/waybar/scripts/aqi open-url",
+    "return-type": "json",
+    "escape": true,
+  },
+  "custom/taskmaid": {
+    "exec": "~/.config/waybar/scripts/taskmaid HDMI-A-1",
+    "on-click-middle": "~/.config/waybar/scripts/taskmaid close",
+    "return-type": "json",
+    "max-length": 1500,
+    "escape": true,
+  },
+}]
